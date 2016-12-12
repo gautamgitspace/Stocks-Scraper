@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 import urllib
+import sys
+import httplib
 import urllib2
+import json
 from bs4 import BeautifulSoup
 
+PUBLIC_API_URL = 'http://query.yahooapis.com/v1/public/yql'
+DATATABLES_URL = 'store://datatables.org/alltableswithkeys'
+HISTORICAL_URL = 'http://ichart.finance.yahoo.com/table.csv?s='
+RSS_URL = 'http://finance.yahoo.com/rss/headline?s='
+FINANCE_TABLES = {'quotes': 'yahoo.finance.quotes',
+                  'options': 'yahoo.finance.options',
+                  'quoteslist': 'yahoo.finance.quoteslist',
+                  'sectors': 'yahoo.finance.sectors',
+                  'industry': 'yahoo.finance.industry'}
 
 def get_stock_tickers():
     req = urllib2.Request(
