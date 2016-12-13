@@ -16,6 +16,7 @@ FINANCE_TABLES = {'quotes': 'yahoo.finance.quotes',
                   'sectors': 'yahoo.finance.sectors',
                   'industry': 'yahoo.finance.industry'}
 
+#fetch all available stock tickers
 def get_stock_tickers():
     req = urllib2.Request(
         'http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
@@ -29,3 +30,13 @@ def get_stock_tickers():
             tickers.append(str(col[0].string.strip()))
     tickers.sort()
     return tickers
+
+#fetch info of latest stock data for a ticker
+def get_current_info(symbol_list, columns='*'):
+    columns = ','.join(columns)
+    symbols = __format_symbol_list(symbol_list)
+
+    yql = ('select %s from %s where symbol in (%s)'
+           % (columns, FINANCE_TABLES['quotes'], symbols))
+    response = execute_yql_query(yql)
+    return __validate_response(response, 'quote')
