@@ -16,6 +16,20 @@ FINANCE_TABLES = {'quotes': 'yahoo.finance.quotes',
                   'sectors': 'yahoo.finance.sectors',
                   'industry': 'yahoo.finance.industry'}
 
+class QueryError(Exception):
+    pass
+
+class NoResultsError(Exception):
+    pass
+
+def __format_symbol_list(symbols):
+    return ",".join(["\"" + symbol + "\"" for symbol in symbols])
+
+def __is_valid_response(response):
+    return ('query' in response
+            and 'results' in response['query']
+            and 'error' not in response)
+            
 #fetch all available stock tickers
 def get_stock_tickers():
     req = urllib2.Request(
