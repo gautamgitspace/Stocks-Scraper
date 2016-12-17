@@ -29,7 +29,18 @@ def __is_valid_response(response):
     return ('query' in response
             and 'results' in response['query']
             and 'error' not in response)
-            
+
+def __validate_response(response, tag):
+    if not __is_valid_response(response):
+        if 'error' in response:
+            raise QueryError('YQL query failed with error: "%s".'
+                             % response['error']['description'])
+        raise QueryError('YQL response malformed.')
+    elif (response['query']['results'] is None
+          or tag not in response['query']['results']):
+        raise NoResultsError('No results found.')
+    return response['query']['results'][tag]
+
 #fetch all available stock tickers
 def get_stock_tickers():
     req = urllib2.Request(
