@@ -65,3 +65,26 @@ def get_current_info(symbol_list, columns='*'):
            % (columns, FINANCE_TABLES['quotes'], symbols))
     response = execute_yql_query(yql)
     return __validate_response(response, 'quote')
+
+#fetch historical info for a stock ticker
+def get_historical_info(symbol, from_dt=None, to_dt=None):
+    """
+    Historical data includes date, open, close, high, low, volume,
+    and adjusted close.
+    """
+
+    if from_dt is None or to_dt is None:
+        date_string = ''
+    else:
+        date_string = ('&a=%d&b=%d&c=%d&d=%d&e=%d&f=%d&g=d&ignore=.csv' %
+                       (from_dt.month-1, from_dt.day, from_dt.year,
+                        to_dt.month-1, to_dt.day, to_dt.year))
+
+    yql = ('select * from csv where url="%s"'
+           ' and columns="Date,Open,High,Low,Close,Volume,AdjClose"' %
+           (HISTORICAL_URL + symbol + date_string))
+    response = execute_yql_query(yql)
+    results = __validate_response(response, 'row')
+    # delete first row which contains column names
+    del results[0]
+    return results
