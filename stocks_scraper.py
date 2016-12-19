@@ -88,3 +88,11 @@ def get_historical_info(symbol, from_dt=None, to_dt=None):
     # delete first row which contains column names
     del results[0]
     return results
+
+#fetch RSS feed for the specifued symbol
+def get_news_feed(symbol):
+    feed_url = RSS_URL + symbol
+    yql = ('select title, link, description, pubDate '
+           'from rss where url="%s"' % feed_url)
+    response = execute_yql_query(yql)
+    return __validate_response(response, 'item')
