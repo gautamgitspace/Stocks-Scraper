@@ -104,4 +104,17 @@ if __name__ == "__main__":
         print 'GIVE A TICKER AS AN ARGUMENT. I AM AWARE OF:\n', get_stock_tickers()
         sys.exit(1)
     else:
-        print 'YOUR MENU HERE'
+        print ("""
+        1. HISTORICAL INFO
+        2. CURRENT INFO
+        3. RSS FEED DATA
+        """)
+
+        ans = raw_input("What would you like to do? ")
+
+        if ans=="1":
+            print get_historical_info(''.join(str(e) for e in (sys.argv[1:])))
+        elif ans=="2":
+            print get_current_info(sys.argv[1:])
+        elif ans=="3":
+            print get_news_feed(''.join(str(e) for e in(sys.argv[1:])))
