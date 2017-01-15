@@ -96,3 +96,12 @@ def get_news_feed(symbol):
            'from rss where url="%s"' % feed_url)
     response = execute_yql_query(yql)
     return __validate_response(response, 'item')
+
+#DRIVER
+if __name__ == "__main__":
+    if ''.join(str(e) for e in (sys.argv[1:])) == "":
+        print 'WRONG INVOCATION OF SCRIPT'
+        print 'GIVE A TICKER AS AN ARGUMENT. I AM AWARE OF:\n', get_stock_tickers()
+        sys.exit(1)
+    else:
+        print 'YOUR MENU HERE'
