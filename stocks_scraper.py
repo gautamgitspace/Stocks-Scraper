@@ -30,6 +30,17 @@ def __is_valid_response(response):
             and 'results' in response['query']
             and 'error' not in response)
 
+#Will fetch and return the json data for the given ticker
+def execute_yql_query(yql):
+    conn = httplib.HTTPConnection('query.yahooapis.com')
+    query_string = urllib.urlencode({
+        'q': yql,
+        'format': 'json',
+        'env': DATATABLES_URL
+    })
+    conn.request('GET', PUBLIC_API_URL + '?' + query_string)
+    return json.loads(conn.getresponse().read())
+
 def __validate_response(response, tag):
     if not __is_valid_response(response):
         if 'error' in response:
